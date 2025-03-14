@@ -25,7 +25,7 @@ class GraphNX:
         self.G.add_edge(u, v)
 
     # Breadth-first search from sample code in Bb
-    def bfs(self, start):
+    def bfs(self, start):        
         visited, queue = set(), [start]
         p = []
         while queue:
@@ -34,6 +34,18 @@ class GraphNX:
                 visited.add(vertex)
                 p.append(vertex)
                 queue.extend(set(self.G.neighbors(vertex)) - visited)
+        
+        # Ensure all vertices are visited
+        for node in self.G.nodes:
+            if node not in visited:
+                queue.append(node)
+                while queue:
+                    vertex = queue.pop(0)
+                    if vertex not in visited:
+                        visited.add(vertex)
+                        p.append(vertex)
+                        queue.extend(set(self.G.neighbors(vertex)) - visited)
+        
         return p
     
     # Depth-first search from sample code in Bb
@@ -49,6 +61,12 @@ class GraphNX:
 
         for neighbor in set(self.G.neighbors(start)) - visited:
             self.dfs(neighbor, visited)
+        
+        # Ensure all vertices are visited
+        for node in self.G.nodes:
+            if node not in visited:
+                self.dfs(node, visited)
+        
         return visited
 
     # Draws the graph with a structured layout matching the given image in the project description
@@ -85,7 +103,7 @@ edges = [
 for u, v in edges:
     g.add_edge(u, v)
 
-# Initialize global variable for DFS call count
+# Initialize global variable for BFS and DFS call count
 t = 0
 
 # Draw the initial graph before a search
