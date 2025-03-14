@@ -2,6 +2,17 @@
 # Aiden Cary, Dalton Gorham, and Nathan Wetherington
 # Coded with the help of ChatGPT and Github Copilot
 
+# Program description:
+# This program creates a graph using NetworkX and performs a breadth-first search (BFS) and depth-first search (DFS) on the graph.
+# The graph is then drawn with a structured layout matching the given image in the project description.
+# The BFS and DFS functions are called on the graph, and the visited nodes are printed.
+# The graph is then drawn with the visited nodes highlighted in red.
+
+# Order of graphs printed:
+# 1. Initial graph before a search
+# 2. Graph after BFS search with visited nodes highlighted in red
+# 3. Graph after DFS search with visited nodes highlighted in red
+
 import networkx as nx
 import matplotlib.pyplot as plt
 
@@ -102,6 +113,9 @@ for u, v in edges:
 
 # Initialize global variable for DFS call count
 t = 0
+
+# Draw the initial graph before a search
+g.draw_graph()
 
 # Example BFS call
 bfs_path = g.bfs('A')
