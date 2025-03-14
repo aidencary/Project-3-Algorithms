@@ -24,32 +24,6 @@ class GraphNX:
     def add_edge(self, u, v):
         self.G.add_edge(u, v)
 
-    def find_connected_components(self):
-        if self.G.is_directed():
-            raise ValueError("Connected components are for undirected graphs only.")
-        
-        components = list(nx.connected_components(self.G))
-        return [list(comp) for comp in components]
-
-    # Find the shortest path between two nodes
-    # This may not be used in the final implementation
-    def find_path(self, start, end):
-        try:
-            path = nx.shortest_path(self.G, source=start, target=end, method="dfs")
-            return path
-        except nx.NetworkXNoPath:
-            return None
-
-    # Find the topological sort of the graph
-    def topological_sort(self):
-        if not self.G.is_directed():
-            raise ValueError("Topological sorting is only valid for directed graphs.")
-        
-        if not nx.is_directed_acyclic_graph(self.G):
-            raise ValueError("Graph is not a DAG; topological sorting is not possible.")
-
-        return list(nx.topological_sort(self.G))
-
     # Breadth-first search from sample code in Bb
     def bfs(self, start):
         visited, queue = set(), [start]
