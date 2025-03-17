@@ -178,15 +178,18 @@ def q1():
     # Initialize global variable for BFS and DFS call count
     
     # Draw the initial graph before a search
+    print("Initial Graph")
     g.draw_graph()
 
     # Example BFS call
     bfs_path = g.bfs('A')
+    print("Graph after BFS")
     print("BFS path:", bfs_path)
     g.draw_graph(highlight_path=bfs_path)
 
     # Example DFS call
     visited_nodes = g.dfs('A')
+    print("Graph after DFS")
     print("DFS visited nodes:", visited_nodes)
     g.draw_graph(highlight_path=list(visited_nodes))
 
@@ -208,18 +211,34 @@ def q2():
     for u, v in edges:
         digraph.add_edge(u, v)
 
+    # Draw the initial graph before a search
+    print("Initial Graph")
     digraph.draw_graph2()
     # Find and print strongly connected components
+    print("Strongly Connected Components")
     digraph.find_scc()
     # Draw the meta graph of strongly connected components
+    print("Meta Graph of Strongly Connected Components")
     digraph.draw_meta_graph()
     # Topological sort of the meta graph
+    print("Topological Sort of the Meta Graph")
     digraph.topological_sort_meta_graph()
 
 
 t = 0
-# Quesiton 1
-q1()
-# Question 2
-#q2()
+
+def main():
+    while True:
+        choice = input("Enter 'q1' to run Question 1 or 'q2' to run Question 2 (or 'exit' to quit): ").strip().lower()
+        if choice == 'q1':
+            q1()
+        elif choice == 'q2':
+            q2()
+        elif choice == 'exit':
+            break
+        else:
+            print("Invalid choice. Please enter 'q1', 'q2', or 'exit'.")
+
+if __name__ == "__main__":
+    main()
 
