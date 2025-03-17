@@ -68,8 +68,9 @@ class GraphNX:
                 self.dfs(node, visited)
         
         return visited
+    
 
-    # Draws the graph with a structured layout matching the given image in the project description
+            # Draws the graph with a structured layout matching the given image in the project description
     def draw_graph(self, highlight_path=None):
         """Draw the graph with a structured layout matching the given image"""
         pos = {
@@ -87,34 +88,138 @@ class GraphNX:
             nx.draw_networkx_edges(self.G, pos, edgelist=path_edges, edge_color='red', width=2)
 
         plt.show()
+    
 
-# Example Usage
-g = GraphNX(directed=False)
+         # Draws the graph with a structured layout matching the given image in the project description
+    def draw_graph2(self, highlight_path=None):
+        """Draw the graph with a structured layout matching the given image"""
+        pos = {
+            1: (.5, 3), 2: (1, 2), 3: (2, 3), 4: (0, 2.5),
+            5: (3, 2.5 ), 6: (4, 2), 7: (3.5, 1), 8: (2.5, 1.5),
+            9: (1.5, 1.7), 10: (2, 1), 11: (1, 1), 12: (.5, 1.8)
+        }
 
-# Updated edges based on the requirements
-edges = [
-    ('A', 'B'), ('B', 'C'), ('C', 'D'),
-    ('A', 'E'), ('A', 'F'), ('B', 'F'), ('C', 'G'), ('D', 'G'),
-    ('E', 'F'), ('E', 'I'), ('F', 'I'), ('I', 'J'), ('I', 'M'), 
-    ('K', 'L'), ('L', 'P'), ('M', 'N'), 
-    ('O', 'K'), ('K', 'H'), ('L', 'H')
-]
+        plt.figure(figsize=(6, 6))
+        nx.draw(self.G, pos, with_labels=True, node_color='lightblue', edge_color='gray', node_size=1500, font_size=12, font_weight="bold")
 
-for u, v in edges:
-    g.add_edge(u, v)
+        if highlight_path:
+            path_edges = list(zip(highlight_path, highlight_path[1:]))
+            nx.draw_networkx_edges(self.G, pos, edgelist=path_edges, edge_color='red', width=2)
 
-# Initialize global variable for BFS and DFS call count
+        plt.show()
+
+
+ # Find and print strongly connected components
+    def find_scc(self):
+        scc = list(nx.strongly_connected_components(self.G))
+        print("Strongly Connected Components:")
+        for component in scc:
+            print(component)
+        return scc
+    
+
+       # Draw the meta graph of strongly connected components
+    def draw_meta_graph(self):
+        scc = self.find_scc()
+        meta_graph = nx.DiGraph()
+
+        # Create a mapping from node to its SCC index
+        node_to_scc = {}
+        for i, component in enumerate(scc):
+            for node in component:
+                node_to_scc[node] = i
+
+        # Add nodes for each SCC
+        for i in range(len(scc)):
+            meta_graph.add_node(i)
+
+        # Add edges between SCCs
+        for u, v in self.G.edges():
+            if node_to_scc[u] != node_to_scc[v]:
+                meta_graph.add_edge(node_to_scc[u], node_to_scc[v])
+
+        labels = {i: ','.join(map(str, component)) for i, component in enumerate(scc)}
+
+        # Draw the meta graph
+        pos = nx.spring_layout(meta_graph)
+        plt.figure(figsize=(6, 6))
+        nx.draw(meta_graph, pos, labels= labels, node_color='lightblue', edge_color='gray', node_size=2500, font_size=12, font_weight="bold")
+        plt.show()
+        
+        return meta_graph
+    
+    def topological_sort_meta_graph(self):
+        meta_graph = self.draw_meta_graph()
+        topo_order = list(nx.topological_sort(meta_graph))
+        print("Topological Order of the Meta Graph:", topo_order)
+        return topo_order
+
+
+
+
+
+def q1():
+
+        # Example Usage
+    g = GraphNX(directed=False)
+
+    # Updated edges based on the requirements
+    edges = [
+        ('A', 'B'), ('B', 'C'), ('C', 'D'),
+        ('A', 'E'), ('A', 'F'), ('B', 'F'), ('C', 'G'), ('D', 'G'), ('G', 'J'),
+        ('E', 'F'), ('E', 'I'), ('F', 'I'), ('I', 'J'), ('I', 'M'), 
+        ('K', 'L'), ('L', 'P'), ('M', 'N'), 
+        ('O', 'K'), ('K', 'H'), ('L', 'H')
+    ]
+
+    for u, v in edges:
+        g.add_edge(u, v)
+
+    # Initialize global variable for BFS and DFS call count
+    
+    # Draw the initial graph before a search
+    g.draw_graph()
+
+    # Example BFS call
+    bfs_path = g.bfs('A')
+    print("BFS path:", bfs_path)
+    g.draw_graph(highlight_path=bfs_path)
+
+    # Example DFS call
+    visited_nodes = g.dfs('A')
+    print("DFS visited nodes:", visited_nodes)
+    g.draw_graph(highlight_path=list(visited_nodes))
+
+
+
+
+
+def q2():
+        
+
+    digraph = GraphNX(directed=True)
+
+    edges = [
+        (1, 3),(2, 1), (3,2), (3, 5), (4, 1), (4, 2), (4, 12), (5, 6), (5, 8),
+        (6, 7), (6, 8), (6, 10), (7, 10), (8, 10), (8, 9), (9,5), (9, 11), (10, 9),
+        (10, 11), (11, 12)
+    ]
+
+    for u, v in edges:
+        digraph.add_edge(u, v)
+
+    digraph.draw_graph2()
+    # Find and print strongly connected components
+    digraph.find_scc()
+    # Draw the meta graph of strongly connected components
+    digraph.draw_meta_graph()
+    # Topological sort of the meta graph
+    digraph.topological_sort_meta_graph()
+
+
 t = 0
+# Quesiton 1
+q1()
+# Question 2
+#q2()
 
-# Draw the initial graph before a search
-g.draw_graph()
-
-# Example BFS call
-bfs_path = g.bfs('A')
-print("BFS path:", bfs_path)
-g.draw_graph(highlight_path=bfs_path)
-
-# Example DFS call
-visited_nodes = g.dfs('A')
-print("DFS visited nodes:", visited_nodes)
-g.draw_graph(highlight_path=list(visited_nodes))
