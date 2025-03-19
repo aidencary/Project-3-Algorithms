@@ -229,9 +229,6 @@ class GraphNX:
         return topo_order
 
 
-
-
-
 def q1():
 
         # Example Usage
@@ -266,9 +263,6 @@ def q1():
     print("Graph after DFS")
     print("DFS visited nodes:", visited_nodes)
     g.draw_graph(highlight_path=list(visited_nodes))
-
-
-
 
 
 def q2():
@@ -332,8 +326,10 @@ def q3():
 t = 0
 
 def main():
+
+    # Main loop to run the program
     while True:
-        choice = input("Enter 'q1' to run Question 1 or 'q2' to run Question 2 (or 'exit' to quit): ").strip().lower()
+        choice = input("Enter 'q1' to run Question 1, 'q2' to run Question 2, or 'q3' to run Question 3 (or 'exit' to quit): ").strip().lower()
         choice = choice.lower()
         if choice == 'q1':
             q1()
